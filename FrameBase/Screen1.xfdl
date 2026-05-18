@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="Screen1" width="464" height="831" titletext="Screen 1" onload="Screen1_onload" scrolltype="none">
+    <Layouts>
+      <Layout height="831" width="464">
+        <Static id="sta_topBg" taborder="0" left="0" top="0" width="464" height="50" background="#168DFC"/>
+        <Static id="sta_nexacro" taborder="1" text="NEXACRO" left="280" top="5" width="168" height="40" font="normal 32px/normal 'ABeeZee'" color="#FFFFFF" textAlign="center" verticalAlign="middle"/>
+        <Static id="sta_homepage" taborder="2" text="Homepage" left="7" top="60" width="232" height="68" font="normal 32px/normal 'ABeeZee'" color="#000000" verticalAlign="middle"/>
+        <Static id="sta_line" taborder="3" left="13" top="123" width="440" height="5" border="5px solid #168DFC"/>
+        <Static id="sta_username" taborder="4" left="7" top="149" width="300" height="42" font="normal 18px/normal 'ABeeZee'" text=""/>
+        <Static id="sta_lastlogin" taborder="5" left="75" top="207" width="359" height="30" font="normal 18px/normal 'ABeeZee'" text=""/>
+        <Static id="sta_email" taborder="6" left="75" top="253" width="354" height="29" font="normal 18px/normal 'ABeeZee'" text=""/>
+        <Static id="sta_msgTitle" taborder="7" text="■ Message to Mr.Nguyen Van A" left="41" top="308" width="323" height="40" font="normal 15px/normal 'ABeeZee'" color="#000000"/>
+        <Grid id="grd_message" taborder="8" left="19" top="348" width="426" height="147" binddataset="ds_message" autofittype="col" border="1px solid #B9B9B9" borderRadius="4px" cssclass="" scrolltype="none">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="100"/>
+                <Column size="80"/>
+                <Column size="244"/>
+              </Columns>
+              <Rows>
+                <Row size="40" band="head"/>
+                <Row size="35"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="Date" font="normal 14px/normal 'ABeeZee'" background="#F2F2F2" color="#000000" border="1px solid #E0E0E0"/>
+                <Cell col="1" colspan="2" text="Details of your message" font="normal 14px/normal 'ABeeZee'" background="#F2F2F2" color="#000000" border="1px solid #E0E0E0"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:date" textAlign="center" border="1px solid #E0E0E0"/>
+                <Cell col="1" text="bind:type" color="#FF0000" textAlign="center" border="1px solid #E0E0E0"/>
+                <Cell col="2" text="bind:details" border="1px solid #E0E0E0" padding="0px 0px 0px 10px"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="sta_accTitle" taborder="9" text="■ Account Information" left="24" top="520" width="323" height="40" font="normal 15px/normal 'ABeeZee'" color="#000000"/>
+        <Grid id="grd_account" taborder="10" left="21" top="560" width="296" height="150" binddataset="ds_account" autofittype="col" border="1px solid #B9B9B9" borderRadius="4px">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="120"/>
+                <Column size="174"/>
+              </Columns>
+              <Rows>
+                <Row size="30"/>
+              </Rows>
+              <Band id="body">
+                <Cell text="bind:label" background="#5bc0de" color="#000000" font="normal 13px/normal 'ABeeZee'"/>
+                <Cell col="1" text="bind:value" font="normal 13px/normal 'ABeeZee'"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_next" taborder="11" text="Next Page" left="331" top="637" width="113" height="30" background="#D9D9D9" font="normal 14px/normal 'Inter'" color="#000000" onclick="btn_next_onclick"/>
+        <Static id="sta_botBg" taborder="12" left="0" top="799" width="464" height="32" background="#168DFC"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_user">
+        <ColumnInfo>
+          <Column id="fullname" type="STRING" size="256"/>
+          <Column id="lastlogin" type="STRING" size="256"/>
+          <Column id="email" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_message">
+        <ColumnInfo>
+          <Column id="date" type="STRING" size="256"/>
+          <Column id="type" type="STRING" size="256"/>
+          <Column id="details" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="date">2024.07.09</Col>
+            <Col id="type">[News]</Col>
+            <Col id="details">This is example</Col>
+          </Row>
+          <Row>
+            <Col id="date">2024.06.06</Col>
+            <Col id="type">[Ads]</Col>
+            <Col id="details">This is example</Col>
+          </Row>
+          <Row>
+            <Col id="date">2024.06.03</Col>
+            <Col id="type">[SMS]</Col>
+            <Col id="details">This is example</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_account">
+        <ColumnInfo>
+          <Column id="label" type="STRING" size="256"/>
+          <Column id="value" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="sta_username" propid="text" datasetid="ds_user" columnid="fullname"/>
+      <BindItem id="item1" compid="sta_lastlogin" propid="text" datasetid="ds_user" columnid="lastlogin"/>
+      <BindItem id="item2" compid="sta_email" propid="text" datasetid="ds_user" columnid="email"/>
+    </Bind>
+    <Script type="xscript5.1"><![CDATA[this.Screen1_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.transaction("svcCustomerInfo", "https://7d36b326-497d-4a1f-a861-c3b9aa41b364.mock.pstmn.io/getCustomerInformation?user_id=1", "", "ds_user=Dataset1", "", "fn_callback");
+
+	this.transaction("svcAccountInfo", "https://7d36b326-497d-4a1f-a861-c3b9aa41b364.mock.pstmn.io/getMainBankAccountInformation?user_id=1", "", "ds_account=Dataset1", "", "fn_callback");
+
+	this.transaction("svcTransactions", "https://7d36b326-497d-4a1f-a861-c3b9aa41b364.mock.pstmn.io/getRecentTransactions?user_id=1", "", "ds_message=Dataset1", "", "fn_callback");
+};
+
+this.fn_callback = function(strSvcId, nErrorCode, strErrorMsg)
+{
+	if (nErrorCode >= 0) {
+		if (strSvcId == "svcCustomerInfo") {
+			var loginTime = this.ds_user.getColumn(0, "lastlogin");
+			var userEmail = this.ds_user.getColumn(0, "email");
+			if(loginTime) this.ds_user.setColumn(0, "lastlogin", "Last login : " + loginTime);
+			if(userEmail) this.ds_user.setColumn(0, "email", "Email        : " + userEmail);
+		}
+	} else {
+		trace("Lỗi API [" + strSvcId + "]: " + strErrorMsg);
+	}
+};
+
+this.btn_next_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	alert("Chuyển sang Screen 2 (Code chuyển trang sẽ đặt ở đây!)");
+	// this.getOwnerFrame().set_formurl("FrameBase::Screen2.xfdl");
+};]]></Script>
+  </Form>
+</FDL>

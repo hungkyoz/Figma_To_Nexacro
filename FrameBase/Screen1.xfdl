@@ -130,7 +130,6 @@ this.fn_callback = function(strSvcId, nErrorCode, strErrorMsg)
 this.btn_next_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
 {
 	alert("Chuyển sang Screen 2 (Code chuyển trang sẽ đặt ở đây!)");
-	// this.getOwnerFrame().set_formurl("FrameBase::Screen2.xfdl");
 };]]></Script>
   </Form>
 </FDL>

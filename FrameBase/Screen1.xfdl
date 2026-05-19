@@ -36,7 +36,7 @@
           </Formats>
         </Grid>
         <Static id="sta_accTitle" taborder="9" text="■ Account Information" left="24" top="520" width="323" height="40" font="normal 15px/normal 'ABeeZee'" color="#000000"/>
-        <Grid id="grd_account" taborder="10" left="21" top="560" width="296" height="150" binddataset="ds_account" autofittype="col" border="1px solid #B9B9B9" borderRadius="4px">
+        <Grid id="grd_account" taborder="10" left="21" top="560" width="296" height="152" binddataset="ds_account" autofittype="col" border="1px solid #B9B9B9" borderRadius="4px" scrolltype="none">
           <Formats>
             <Format id="default">
               <Columns>
@@ -106,27 +106,60 @@
     </Bind>
     <Script type="xscript5.1"><![CDATA[this.Screen1_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
 {
-	this.transaction("svcCustomerInfo", "https://7d36b326-497d-4a1f-a861-c3b9aa41b364.mock.pstmn.io/getCustomerInformation?user_id=1", "", "ds_user=Dataset1", "", "fn_callback");
-
-	this.transaction("svcAccountInfo", "https://7d36b326-497d-4a1f-a861-c3b9aa41b364.mock.pstmn.io/getMainBankAccountInformation?user_id=1", "", "ds_account=Dataset1", "", "fn_callback");
-
-	this.transaction("svcTransactions", "https://7d36b326-497d-4a1f-a861-c3b9aa41b364.mock.pstmn.io/getRecentTransactions?user_id=1", "", "ds_message=Dataset1", "", "fn_callback");
+	this.fn_getApiUser();
+	this.fn_loadBankAccountInfo();
 };
-
-this.fn_callback = function(strSvcId, nErrorCode, strErrorMsg)
+this.fn_getApiUser = function()
 {
-	if (nErrorCode >= 0) {
-		if (strSvcId == "svcCustomerInfo") {
-			var loginTime = this.ds_user.getColumn(0, "lastlogin");
-			var userEmail = this.ds_user.getColumn(0, "email");
-			if(loginTime) this.ds_user.setColumn(0, "lastlogin", "Last login : " + loginTime);
-			if(userEmail) this.ds_user.setColumn(0, "email", "Email        : " + userEmail);
+	var xhr = new XMLHttpRequest();
+	xhr._form = this;
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			xhr._form.fn_userCallback(xhr.responseText);
 		}
-	} else {
-		trace("Lỗi API [" + strSvcId + "]: " + strErrorMsg);
-	}
+	};
+	xhr.open("GET", "https://7d36b326-497d-4a1f-a861-c3b9aa41b364.mock.pstmn.io/getCustomerInformation?user_id=1", true);
+	xhr.send();
 };
 
+this.fn_userCallback = function(responseText)
+{
+	var jsonData = JSON.parse(responseText);
+	this.ds_user.clearData();
+	var nRow = this.ds_user.addRow();
+	this.ds_user.setColumn(nRow, "fullname", "Mr." + jsonData.name);
+	this.ds_user.setColumn(nRow, "lastlogin", "Last login : " + jsonData.last_login_at);
+	this.ds_user.setColumn(nRow, "email", "Email       : " + jsonData.email);
+};
+this.fn_loadBankAccountInfo = function()
+{
+	var oHttp = new XMLHttpRequest();
+	oHttp._form = this;
+	oHttp.onreadystatechange = function() {
+		if (oHttp.readyState == 4 && oHttp.status == 200) {
+			oHttp._form.fn_loadBankAccountInfo_callback(oHttp.responseText);
+		}
+	};
+	oHttp.open("GET", "https://7d36b326-497d-4a1f-a861-c3b9aa41b364.mock.pstmn.io/getMainBankAccountInformation?user_id=1", true);
+	oHttp.send();
+};
+
+this.fn_loadBankAccountInfo_callback = function(responseText)
+{
+	var oData = JSON.parse(responseText);
+	var ds = this.ds_account;
+	ds.clearData();
+	
+	var nRow;
+	nRow = ds.addRow(); ds.setColumn(nRow, "label", "Card Name"); ds.setColumn(nRow, "value", oData.card_name);
+    
+    var typeCap = oData.transation_type.charAt(0).toUpperCase() + oData.transation_type.slice(1);
+    nRow = ds.addRow(); ds.setColumn(nRow, "label", "Type"); ds.setColumn(nRow, "value", typeCap);
+    
+    nRow = ds.addRow(); ds.setColumn(nRow, "label", "Card No."); ds.setColumn(nRow, "value", oData.card_number);
+	nRow = ds.addRow(); ds.setColumn(nRow, "label", "Current balance"); ds.setColumn(nRow, "value", oData.current_balance);
+	nRow = ds.addRow(); ds.setColumn(nRow, "label", "Loan"); ds.setColumn(nRow, "value", oData.loan);
+};
 this.btn_next_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
 {
 	alert("Chuyển sang Screen 2 (Code chuyển trang sẽ đặt ở đây!)");

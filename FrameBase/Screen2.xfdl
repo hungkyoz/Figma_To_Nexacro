@@ -1,8 +1,171 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <FDL version="2.1">
-  <Form id="Screen2" width="1280" height="720" titletext="New Form">
+  <Form id="Screen2" width="464" height="1773" titletext="Screen 2" onload="Screen2_onload" scrolltype="vertical">
     <Layouts>
-      <Layout height="720" mobileorientation="landscape" width="1280"/>
+      <Layout height="1773" width="464">
+        <Static id="sta_topBg" taborder="0" left="0" top="0" width="464" height="60" background="#168DFC"/>
+        <Static id="sta_nexacro" taborder="1" text="NEXACRO" left="288" top="0" width="179" height="60" font="normal 32px/normal 'ABeeZee'" color="#FFFFFF" textAlign="center" verticalAlign="middle"/>
+        <Static id="sta_title" taborder="2" text="Bank transfer" left="9" top="65" width="232" height="68" font="normal 32px/normal 'ABeeZee'" color="#000000" verticalAlign="middle"/>
+        <Static id="sta_line" taborder="3" left="9" top="133" width="440" height="5" border="5px solid #168DFC"/>
+        <Static id="sta_msgTitle" taborder="4" text="■ Message" left="17" top="138" width="323" height="40" font="normal 15px/normal 'ABeeZee'" color="#000000" verticalAlign="middle"/>
+        <Static id="sta_msg_bg1" taborder="5" left="18" top="187" width="139" height="36" background="#56CCF2" border="1px solid #000000"/>
+        <Radio id="rad_default" taborder="6" left="23" top="193" width="105" height="24" innerdataset="ds_radDefault" codecolumn="code" datacolumn="label" font="normal 14px/normal 'ABeeZee'" color="#000000" onitemchanged="rad_default_onitemchanged" value="D"/>
+        <Edit id="edt_msg_default" taborder="7" left="157" top="187" width="260" height="36" value="This is a message" font="normal 14px/normal 'Inter'" background="#FFFFFF" border="1px solid #000000" padding="0px 10px"/>
+        <Static id="sta_msg_bg2" taborder="8" left="18" top="222" width="139" height="36" background="#56CCF2" border="1px solid #000000"/>
+        <Radio id="rad_custom" taborder="9" left="23" top="228" width="105" height="24" innerdataset="ds_radCustom" codecolumn="code" datacolumn="label" font="normal 14px/normal 'ABeeZee'" color="#000000" onitemchanged="rad_custom_onitemchanged"/>
+        <Static id="sta_rectA" taborder="17" left="157" top="222" width="260" height="36" background="#FFFFFF" border="1px solid #000000"/>
+        <Edit id="edt_msg_custom" taborder="10" left="163" top="227" width="248" height="26" font="normal 14px/normal 'Inter'" background="#D9D9D9" border="0px none" enable="false" padding="0px 10px"/>
+        <Static id="sta_accTitle" taborder="11" text="■ Bank account details" left="19" top="260" width="323" height="40" font="normal 15px/normal 'ABeeZee'" color="#000000" verticalAlign="middle"/>
+        <Static id="sta_acc_label" taborder="12" text="Select bank account" left="19" top="308" width="139" height="36" background="#56CCF2" font="normal 14px/normal 'ABeeZee'" color="#000000" textAlign="center" verticalAlign="middle" border="1px solid #000000"/>
+        <Combo id="cbo_bankAccount" taborder="13" left="158" top="308" width="264" height="36" innerdataset="ds_bankAccounts" codecolumn="accountNo" datacolumn="accountNo" font="normal 14px/normal 'Inter'" background="#FFFFFF" border="1px solid #000000, 1px solid #000000, 1px solid #000000, 0px none" padding="0px 10px" onitemchanged="cbo_bankAccount_onitemchanged"/>
+        <Button id="btn_back" taborder="14" text="Back" left="180" top="366" width="80" height="30" background="#D9D9D9" font="normal 15px/normal 'ABeeZee'" color="#000000" border="0px none" borderRadius="4px" onclick="btn_back_onclick"/>
+        <Static id="sta_transTitle" taborder="15" text="■ Recent transactions" left="15" top="386" width="164" height="77" font="normal 15px/normal 'ABeeZee'" color="#000000" verticalAlign="middle"/>
+        <Grid id="grd_transactions" taborder="16" left="23" top="449" width="410" height="1255" binddataset="ds_transactions" autofittype="col" border="1px solid #B9B9B9" scrolltype="vertical" scrollbartype="normal">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="130"/>
+                <Column size="140"/>
+                <Column size="140"/>
+              </Columns>
+              <Rows>
+                <Row size="48" band="head"/>
+                <Row size="120"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="Date" background="#56CCF2" font="bold 14px/normal 'ABeeZee'" color="#000000" border="1px solid #B9B9B9"/>
+                <Cell col="1" text="Recipient" background="#56CCF2" font="bold 14px/normal 'ABeeZee'" color="#000000" border="1px solid #B9B9B9"/>
+                <Cell col="2" text="Amount" background="#56CCF2" font="bold 14px/normal 'ABeeZee'" color="#000000" border="1px solid #B9B9B9"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:TxDate" textAlign="center" font="normal 13px/normal 'Inter'" border="1px solid #E0E0E0"/>
+                <Cell col="1" text="bind:TxRecipient" textAlign="center" font="normal 13px/normal 'Inter'" border="1px solid #E0E0E0"/>
+                <Cell col="2" text="bind:TxAmount" textAlign="center" font="normal 13px/normal 'Inter'" border="1px solid #E0E0E0"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="sta_footer" taborder="18" left="0" top="1739" width="464" height="34" background="#168DFC"/>
+      </Layout>
     </Layouts>
+    <Objects>
+      <Dataset id="ds_radDefault">
+        <ColumnInfo>
+          <Column id="code" type="STRING" size="256"/>
+          <Column id="label" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="code">D</Col>
+            <Col id="label">Default</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_radCustom">
+        <ColumnInfo>
+          <Column id="code" type="STRING" size="256"/>
+          <Column id="label" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="code">C</Col>
+            <Col id="label">Custom</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_bankAccounts">
+        <ColumnInfo>
+          <Column id="accountNo" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="accountNo">123456789012</Col>
+          </Row>
+          <Row>
+            <Col id="accountNo">987654321098</Col>
+          </Row>
+          <Row>
+            <Col id="accountNo">555566667777</Col>
+          </Row>
+          <Row>
+            <Col id="accountNo">112233445566)</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_transactions">
+        <ColumnInfo>
+          <Column id="TxDate" type="STRING" size="256"/>
+          <Column id="TxRecipient" type="STRING" size="256"/>
+          <Column id="TxAmount" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[this.Screen2_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.cbo_bankAccount.set_value(this.ds_bankAccounts.getColumn(0, "accountNo"));
+	this.fn_loadRecentTransactions();
+};
+this.fn_loadRecentTransactions = function()
+{
+	var xhr = new XMLHttpRequest();
+	xhr._form = this;
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			xhr._form.fn_transCallback(xhr.responseText);
+		}
+	};
+	xhr.open("GET", "https://7d36b326-497d-4a1f-a861-c3b9aa41b364.mock.pstmn.io/getRecentTransactions?user_id=1", true);
+	xhr.send();
+};
+this.fn_transCallback = function(responseText)
+{
+	var arrData = JSON.parse(responseText);
+	var ds = this.ds_transactions;
+	ds.clearData();
+	
+	if (!arrData || arrData.length == 0) return;
+
+	for (var i = 0; i < arrData.length; i++) {
+		var nRow = ds.addRow();
+		var formattedDate = arrData[i].date.replace(/-/g, ".");
+		
+		ds.setColumn(nRow, "TxDate", formattedDate);
+		ds.setColumn(nRow, "TxRecipient", arrData[i].recipient);
+		ds.setColumn(nRow, "TxAmount", arrData[i].amount);
+	}
+};
+this.rad_default_onitemchanged = function(obj:nexacro.Radio,e:nexacro.ItemChangeEventInfo)
+{
+	this.rad_custom.set_value("");
+	this.edt_msg_default.set_enable(true);
+	this.edt_msg_default.set_background("#FFFFFF");
+	
+	this.edt_msg_custom.set_enable(false);
+	this.edt_msg_custom.set_background("#D9D9D9");
+};
+
+this.rad_custom_onitemchanged = function(obj:nexacro.Radio,e:nexacro.ItemChangeEventInfo)
+{
+	this.rad_default.set_value("");
+	this.edt_msg_default.set_enable(false);
+	this.edt_msg_default.set_background("#D9D9D9");
+	
+	this.edt_msg_custom.set_enable(true);
+	this.edt_msg_custom.set_background("#FFFFFF");
+};
+this.cbo_bankAccount_onitemchanged = function(obj:nexacro.Combo,e:nexacro.ItemChangeEventInfo)
+{
+	var selectedAccount = e.postvalue;
+	if (selectedAccount.indexOf("123456789012") > -1) {
+		this.fn_loadRecentTransactions();
+	} 
+	else {
+		this.ds_transactions.clearData();
+	}
+};
+this.btn_back_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.getOwnerFrame().set_formurl("FrameBase::Screen1.xfdl");
+};]]></Script>
   </Form>
 </FDL>
